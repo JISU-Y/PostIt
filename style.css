@@ -1,0 +1,190 @@
+@import url("https://fonts.googleapis.com/css2?family=Lato&display=swap");
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Lato", sans-serif;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  overflow: auto;
+  margin: 0;
+  position: relative;
+}
+
+h1 {
+  text-align: center;
+}
+
+.container {
+  width: 90%;
+  height: fit-content;
+  display: flex;
+  background-color: whitesmoke;
+  padding: 50px;
+  border-radius: 3px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+  flex-wrap: wrap;
+  /* align-items: center; */
+  /* justify-content: center; */
+}
+
+.toDoForm {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  height: 25px;
+  margin-bottom: 30px;
+}
+
+.toDoInput {
+  height: 100%;
+  line-height: 25px;
+}
+
+.toDoSubmit {
+  height: 100%;
+  margin: 0 0 0 10px;
+}
+
+.list-container {
+  display: flex;
+  flex-direction: column;
+  background-color: #fbc531;
+  width: 250px;
+  height: 250px;
+  /* padding: 15px 20px; */
+  margin: 10px;
+  padding: 5px 0;
+  list-style-type: disc;
+  border-radius: 1px 1px 1px 1px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+  overflow: auto;
+  -ms-overflow-style: none;
+  position: relative;
+  max-height: 250px;
+}
+
+.list-container::-webkit-scrollbar {
+  display: none;
+}
+
+.list-container .toDoList {
+  width: 100%;
+  margin: 5px 0;
+  padding: 3px 15px;
+  pointer-events: none;
+}
+
+.list-container .addForm {
+  margin-bottom: 15px;
+  pointer-events: none;
+}
+
+.list-container .inputText {
+  width: 90%;
+  height: 25px;
+  margin: 0 10px 10px 10px;
+  padding: 0;
+}
+
+.list-container .inputText:focus {
+  outline: none;
+}
+
+.list-container .addBtn {
+  width: 25px;
+  height: 25px;
+  border: 0;
+  border-radius: 50%;
+  cursor: pointer;
+  margin: 0 15px 0 15px;
+}
+
+.list-container .postEdge {
+  width: 24px;
+  height: 24px;
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  background-color: #fbc531;
+  box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.3);
+  margin: 0;
+  transition: all 0.5s ease-in;
+  border-left: 24px solid #e6b224;
+  border-bottom: 24px solid transparent;
+  display: inline-block;
+  margin-left: auto;
+}
+
+.list-container .postEdge.long {
+  position: sticky;
+  right: 0;
+  bottom: 0;
+}
+
+.list-container .postEdge:hover {
+  cursor: pointer;
+  /* width: 24px;
+  height: 24px;
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  background-color: #fbc531;
+  box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.3);
+  margin: 0;
+  border-left: 24px solid #e6b224;
+  border-bottom: 24px solid transparent; */
+}
+
+.todo {
+  display: flex;
+  margin-bottom: 5px;
+  font-size: 15px;
+  font-family: inherit;
+  justify-content: space-between;
+}
+
+.list-container .toDoList li input {
+  margin: 5px;
+}
+
+.todo li {
+  flex: 1;
+  text-align: left;
+  list-style-type: none;
+  margin-left: 5px;
+  word-break: break-all;
+  line-height: 25px;
+}
+
+.todo button {
+  background-color: inherit;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+  border: 0;
+  border-radius: 3px;
+  cursor: pointer;
+  transition: transform 0.1s ease;
+  width: 25px;
+  height: 25px;
+}
+
+.todo button:hover {
+  transform: scale(0.95);
+}
+
+/* icon 클릭은 없애버리기 */
+.fa-trash,
+.fa-check,
+.fa-plus {
+  pointer-events: none;
+}
+
+.completed {
+  text-decoration: line-through;
+  opacity: 0.5;
+}

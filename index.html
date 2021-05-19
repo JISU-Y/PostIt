@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>My ToDoList</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css"
+      integrity="sha512-1PKOgIY59xJ8Co8+NE6FZ+LOAZKjy+KY8iq0G4B3CyeY6wYHN3yt9PW0XpSriVlkMXe40PTKnXrLnZ9+fkDaog=="
+      crossorigin="anonymous"
+    />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <header>
+      <h1>Post It!</h1>
+      <!-- <form class="toDoForm">
+        <input type="text" class="toDoInput" placeholder="할 일이 어딨더라" />
+        <button class="toDoSubmit" type="submit">찾기</button>
+      </form> -->
+    </header>
+
+    <div class="container">
+      <div class="list-container">
+        <ul class="toDoList"></ul>
+        <form class="addForm">
+          <input type="text" class="inputText" placeholder="할 일" />
+          <button class="addBtn" type="submit">
+            <i class="fa fa-plus"></i>
+          </button>
+        </form>
+        <div class="postEdge"></div>
+      </div>
+    </div>
+
+    <script src="postIt.js"></script>
+    <!-- <script src="postIt copy.js"></script> -->
+    <!-- <script src="postIt copy 2.js"></script> -->
+  </body>
+</html>
