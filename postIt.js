@@ -109,6 +109,8 @@ function deleteCheck(e) {
   if (item.classList[0] === "complete-btn") {
     const todo = item.parentElement;
     todo.classList.toggle("completed");
+    // complete 누르면 해당 li에 class 추가해서 남기자
+    completeCheck(item.parentElement)
   }
 }
 
@@ -130,47 +132,6 @@ function saveLocalTodos(todo, index) {
   // 그러고 다시 local에다가 저장
   localStorage.setItem(`TODOS[${index}]`, JSON.stringify(todos));
 }
-
-// 이걸 getPosts에서 해주니까
-// function getTodos() {
-//   let todos;
-
-//   // local에 배열 있는지 없는지 체크
-//   if (localStorage.getItem(`TODOS[${localIndex}]`) === null) {
-//     // local storage 배열이 비어있으면
-//     // 새로운 배열에다가 빈 배열 할당
-//     todos = [];
-//   } else {
-//     todos = JSON.parse(localStorage.getItem(`TODOS[${localIndex}]`));
-//   }
-
-//   todos.forEach(function (todo) {
-//     // todo div
-//     const todoDiv = document.createElement("div");
-//     todoDiv.classList.add("todo");
-
-//     // check mark btn
-//     const completedButton = document.createElement("button");
-//     completedButton.innerHTML = '<i class="fas fa-check"></i>'; // 이렇게 innerHTML로 icon 바로 넣어줘도 된다.
-//     completedButton.classList.add("complete-btn");
-//     todoDiv.appendChild(completedButton);
-
-//     // li
-//     const newTodo = document.createElement("li");
-//     newTodo.innerText = todo;
-//     newTodo.classList.add("todo-item");
-//     todoDiv.appendChild(newTodo);
-
-//     // del btn
-//     const trashButton = document.createElement("button");
-//     trashButton.innerHTML = '<i class="fas fa-trash"></i>';
-//     trashButton.classList.add("trash-btn");
-//     todoDiv.appendChild(trashButton);
-
-//     // append to list
-//     toDoUL.appendChild(todoDiv);
-//   });
-// }
 
 function removeLocalTodos(todo, index) {
   let todos;
@@ -451,4 +412,12 @@ function InEditToDone() {
       LC.children[0].style.pointerEvents = "none"; // UL list 다시 비활성화
     }
   });
+}
+
+function completeCheck(todo) {
+  // 아마 complete된 todo를 배열로 저장했다가
+  // 그 list 중에 완료된 것들 배열이 따로 있을 것이고,
+  // 거기다가 하나씩 저장한다.
+  const todoList = todo.parentElement
+  
 }
