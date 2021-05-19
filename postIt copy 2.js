@@ -17,8 +17,15 @@ let localIndex = localStorage.length; // 0으로 초기화 할 게 아니라 지
 // document.addEventListener("DOMContentLoaded", getTodos);
 document.addEventListener("DOMContentLoaded", getPost);
 // postEdge.addEventListener("click", addPost);
-container.addEventListener("click", checkList); // 어느 postit이 체크되었나 확인
-inputText.addEventListener("click", checkList); // 전체 postit 선택하는거 이외에도 input 눌렀을 때도 체크하자
+container.addEventListener("click", (e) => {
+  if (e.target.classList[0] === "list-container") {
+    // 그냥 list container를 클릭했을 때만 check list 하도록
+    checkList(e);
+  } else if (e.target.classList[0] === "container") {
+    InEditToDone();
+  }
+}); // 어느 postit이 체크되었나 확인
+//inputText.addEventListener("click", checkList); // 전체 postit 선택하는거 이외에도 input 눌렀을 때도 체크하자
 
 // todos[] 이거마다 저장하는거 먼저
 // 흠 이거는 그러면은 todos[]를 선택했을 때 해야하는거 index를 설정해주어야 하는거 아닌가.?
@@ -124,45 +131,46 @@ function saveLocalTodos(todo, index) {
   localStorage.setItem(`TODOS[${index}]`, JSON.stringify(todos));
 }
 
-function getTodos() {
-  let todos;
+// 이걸 getPosts에서 해주니까
+// function getTodos() {
+//   let todos;
 
-  // local에 배열 있는지 없는지 체크
-  if (localStorage.getItem(`TODOS[${localIndex}]`) === null) {
-    // local storage 배열이 비어있으면
-    // 새로운 배열에다가 빈 배열 할당
-    todos = [];
-  } else {
-    todos = JSON.parse(localStorage.getItem(`TODOS[${localIndex}]`));
-  }
+//   // local에 배열 있는지 없는지 체크
+//   if (localStorage.getItem(`TODOS[${localIndex}]`) === null) {
+//     // local storage 배열이 비어있으면
+//     // 새로운 배열에다가 빈 배열 할당
+//     todos = [];
+//   } else {
+//     todos = JSON.parse(localStorage.getItem(`TODOS[${localIndex}]`));
+//   }
 
-  todos.forEach(function (todo) {
-    // todo div
-    const todoDiv = document.createElement("div");
-    todoDiv.classList.add("todo");
+//   todos.forEach(function (todo) {
+//     // todo div
+//     const todoDiv = document.createElement("div");
+//     todoDiv.classList.add("todo");
 
-    // check mark btn
-    const completedButton = document.createElement("button");
-    completedButton.innerHTML = '<i class="fas fa-check"></i>'; // 이렇게 innerHTML로 icon 바로 넣어줘도 된다.
-    completedButton.classList.add("complete-btn");
-    todoDiv.appendChild(completedButton);
+//     // check mark btn
+//     const completedButton = document.createElement("button");
+//     completedButton.innerHTML = '<i class="fas fa-check"></i>'; // 이렇게 innerHTML로 icon 바로 넣어줘도 된다.
+//     completedButton.classList.add("complete-btn");
+//     todoDiv.appendChild(completedButton);
 
-    // li
-    const newTodo = document.createElement("li");
-    newTodo.innerText = todo;
-    newTodo.classList.add("todo-item");
-    todoDiv.appendChild(newTodo);
+//     // li
+//     const newTodo = document.createElement("li");
+//     newTodo.innerText = todo;
+//     newTodo.classList.add("todo-item");
+//     todoDiv.appendChild(newTodo);
 
-    // del btn
-    const trashButton = document.createElement("button");
-    trashButton.innerHTML = '<i class="fas fa-trash"></i>';
-    trashButton.classList.add("trash-btn");
-    todoDiv.appendChild(trashButton);
+//     // del btn
+//     const trashButton = document.createElement("button");
+//     trashButton.innerHTML = '<i class="fas fa-trash"></i>';
+//     trashButton.classList.add("trash-btn");
+//     todoDiv.appendChild(trashButton);
 
-    // append to list
-    toDoUL.appendChild(todoDiv);
-  });
-}
+//     // append to list
+//     toDoUL.appendChild(todoDiv);
+//   });
+// }
 
 function removeLocalTodos(todo, index) {
   let todos;
@@ -184,7 +192,19 @@ function removeLocalTodos(todo, index) {
 
   if (todos.length === 0) {
     // 지웠는데 빈 배열이면
-    localStorage.removeItem(`TODOS[${index}]`); // 그냥 key를 지워버림
+    // localStorage.removeItem(`TODOS[${index}]`); // 그냥 key를 지워버림
+    // splice가 안됨..ㅠㅠ
+
+    for (let i = index; i <= localStorage.length - 1; i++) {
+      //nexttodos에 지워지는 배열 다음 거를 담는다.
+      nextTodos = JSON.parse(localStorage.getItem(`TODOS[${i + 1}]`));
+      localStorage.setItem(`TODOS[${i}]`, JSON.stringify(nextTodos));
+    }
+    // 하나씩 다 밀렸으니 마지막거를 지움
+    localStorage.removeItem(`TODOS[${localStorage.length - 1}]`);
+
+    // 누르자마자 post들 다시 꺼내오기
+    addPost();
   } else {
     localStorage.setItem(`TODOS[${index}]`, JSON.stringify(todos));
   }
@@ -297,59 +317,70 @@ function getPost() {
 
     listContainer.appendChild(ul_todo);
 
-    // const form_todo = document.createElement("form");
-    // form_todo.classList.add("addForm");
-    // listContainer.appendChild(form_todo);
+    // edge 생성 안하기
+    // const div_postEdge = document.createElement("div");
+    // div_postEdge.classList.add("postEdge");
+    // listContainer.appendChild(div_postEdge);
 
-    // const input_todo = document.createElement("input");
-    // input_todo.classList.add("inputText");
-    // input_todo.setAttribute("type", "text");
-    // input_todo.setAttribute("placeholder", "할 일");
-    // form_todo.appendChild(input_todo);
-
-    // const button_todo = document.createElement("button");
-    // button_todo.classList.add("addBtn");
-    // button_todo.setAttribute("type", "submit");
-    // form_todo.appendChild(button_todo);
-
-    // const icon_plus = document.createElement("i");
-    // icon_plus.classList.add("fa");
-    // icon_plus.classList.add("fa-plus");
-    // button_todo.appendChild(icon_plus);
-
-    const div_postEdge = document.createElement("div");
-    div_postEdge.classList.add("postEdge");
-    listContainer.appendChild(div_postEdge);
+    // listContainer = document.getElementById(`TODOS[${i}]`);
+    console.log(listContainer.children[0].style);
 
     container.appendChild(listContainer);
-
-    // get Post 해준거면 local에 저장된 거 다 꺼내서 보여준거고
-    // 이제 원래 맨 위에 있는 list container에서 다시 시작할테니까 여기서도 초기화 해준다.
-    localIndex = localStorage.length;
   }
+  // get Post 해준거면 local에 저장된 거 다 꺼내서 보여준거고
+  // 이제 원래 맨 위에 있는 list container에서 다시 시작할테니까 여기서도 초기화 해준다.
+  localIndex = localStorage.length;
 }
 
 function checkList(e) {
   // 내가 선택한 list-container를 가져온다.
+  console.log(e.target);
   let checkedLC = e.target;
-  // console.log(e.target.classList); // ["list-container", value: "list-container"]
-  if (e.target.classList[0] === "list-container") {
-    checkedLC = e.target;
-  } else if (e.target.classList[0] === "toDoList") {
-    checkedLC = e.target.parentElement;
-  } else if (e.target.classList[0] === "inputText") {
-    checkedLC = e.target.parentElement.parentElement; // addForm -> list-container
-  } else {
-    // do nothing
-    return;
+
+  if (!checkedLC.classList.contains("inEdit")) {
+    // 선택된 list container가 edit중이 아닐때
+    // edit 중이던 list container 다시 원 상태(터치 불가 상태)로
+    InEditToDone();
   }
+
+  // 여기서 이렇게 찾지 말고
+  // 다른 방법으로 list container를 찾자
+  // input Text 눌렀을 때는 무조건 checklist 타야함
+
+  // console.log(e.target.classList); // ["list-container", value: "list-container"]
+  // if (e.target.classList[0] === "list-container") {
+  //   checkedLC = e.target;
+  // } else if (
+  //   e.target.classList[0] === "toDoList" ||
+  //   e.target.classList[0] === "addForm"
+  // ) {
+  //   console.log(e.target);
+  //   checkedLC = e.target.parentElement;
+  // } else if (
+  //   e.target.classList[0] === "inputText" ||
+  //   e.target.classList[0] === "todo"
+  // ) {
+  //   console.log(e.target.parentElement.parentElement);
+  //   checkedLC = e.target.parentElement.parentElement; // addForm -> list-container
+  // } else if (
+  //   e.target.classList[0] === "todo-item" ||
+  //   e.target.classList[0] === "complete-btn" ||
+  //   e.target.classList[0] === "trash-btn"
+  // ) {
+  //   checkedLC = e.target.parentElement.parentElement.parentElement; // btn -> list-container
+  //   console.log(checkedLC);
+  // } else {
+  //   console.log(e.target.classList[0]);
+  //   // do nothing
+  //   return;
+  // }
 
   // 클릭되면 toDoUL css속성  pointer-events: none; => auto로 바꿔주기
   // 클릭되면 수정할 수 있게 해야하니까
   // console.log(checkedLC.children); // [ul.toDoList, form.addForm, div.postEdge]
   console.log(checkedLC.children[0]);
   checkedLC.children[0].style.pointerEvents = "auto";
-
+  console.log(checkedLC);
   // 선택한 post로 들어가서 inputText다시 달고 추가할 수 있도록 하기
   editPost(checkedLC); // getPost 한 것들만 / 디폴트로 표현되는 제일 첫번째 post it에는 적용 안해도 되잖아? 아닌가
   // 나중에 수정다하면 다시 pointerEvents none으로 바꿔주기 어디선가...
@@ -357,18 +388,21 @@ function checkList(e) {
 
 function editPost(checkedLC) {
   // 전에 진행하던 post edit 저장하고 로드
-
+  console.log(checkedLC);
   // 선택한 post로 들어가서 inputText다시 달고 추가할 수 있도록 하기
   // add the form to the list container
   // 선택된 list container 안에 todoList 밑에 붙이기
   //console.log(checkedLC.children[1].className); // postEdge(form 형성 전) / addForm(form 있을 경우)
   const checked_todoUL = checkedLC.children[0];
 
-  if (checkedLC.children[1].className === "postEdge") {
+  if (checkedLC.children.length === 1) {
+    checkedLC.classList.add("inEdit"); // edit 중이라는 클래스를 추가
+
+    // children 개수가 1일때는 아직 input form 안만든것
     // input form이 형성이 되지 않은 경우에만
     const form_todo = document.createElement("form");
     form_todo.classList.add("addForm");
-    checked_todoUL.after(form_todo); // todoList 다음에 붙이기
+    checkedLC.appendChild(form_todo); // list 하위에 todoList 다음에 붙이기
 
     const input_todo = document.createElement("input");
     input_todo.classList.add("inputText");
@@ -385,10 +419,36 @@ function editPost(checkedLC) {
     icon_plus.classList.add("fa");
     icon_plus.classList.add("fa-plus");
     button_todo.appendChild(icon_plus);
+  } else if (checkedLC.children.length === 2) {
+    // input form이 형성되어 있는 경우
+    // 다른 곳 (현재 list container 아닌 다른 어느 곳) 클릭했을 때 form 사라지게
+  } else {
+    // 사실 이 경우가 제일 처음 포스트잇을 가리키는 것임
+    checkedLC.children[2].addEventListener("click", addPost);
   }
+
+  const checked_addForm = checkedLC.children[1];
+  const checked_addBtn = checked_addForm.children[1];
+
+  // input에다 바로 갖다놓기
+  checked_addForm.style.pointerEvents = "auto";
+  checked_addForm.children[0].focus();
+
   console.log(checkedLC.children[1]); // addForm
   console.log(checkedLC.children[1].children[1]); // addBtn 맞음
-  checkedLC.children[1].children[1].addEventListener("click", addTodo);
+  console.log(checked_addBtn);
+  checked_addBtn.addEventListener("click", addTodo);
   checked_todoUL.addEventListener("click", deleteCheck);
-  postEdge.addEventListener("click", addPost); // 이건 어떻게 할지 좀 더 생각해보자
+}
+
+function InEditToDone() {
+  const LCs = document.querySelectorAll(".list-container");
+  console.log(LCs);
+  LCs.forEach((LC) => {
+    if (LC.classList.contains("inEdit")) {
+      LC.classList.remove("inEdit");
+      LC.children[1].remove(); // form 지우기
+      LC.children[0].style.pointerEvents = "none"; // UL list 다시 비활성화
+    }
+  });
 }
