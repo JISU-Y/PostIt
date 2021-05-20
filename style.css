@@ -76,11 +76,25 @@ h1 {
   display: none;
 }
 
-.list-container .toDoList {
+.list-container .toDoList,
+.list-container .completedList {
   width: 100%;
   margin: 5px 0;
   padding: 3px 15px;
   pointer-events: none;
+}
+
+.list-container.mother .toDoList,
+.list-container.mother .completedList {
+  width: 100%;
+  margin: 5px 0;
+  padding: 3px 15px;
+  pointer-events: auto;
+}
+
+.list-container .completedList {
+  text-decoration: line-through;
+  opacity: 0.5;
 }
 
 .list-container .addForm {
