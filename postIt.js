@@ -192,12 +192,13 @@ function addPost() {
   container.innerHTML = "";
 
   //div container에 추가
-  //<div class="list-container">
+  //<div class="list-container mother">
   //    <ul class="toDoList"></ul>
   //    <form class="addForm">
   //        <input type="text" class="inputText" placeholder="할 일">
   //        <button class="addBtn" type="submit"><i class="fa fa-plus"></i></button>
   //    </form>
+  //    <ul class="completedList"></ul>
   //    <div class="postEdge"></div>
   //</div>
   // 항시 맨 앞에 있는 list container는 기준이 되어야 함
@@ -228,6 +229,10 @@ function addPost() {
   icon_plus.classList.add("fa");
   icon_plus.classList.add("fa-plus");
   button_todo.appendChild(icon_plus);
+
+  const ul_completed = document.createElement("ul");
+  ul_completed.classList.add("completedList");
+  listContainer.appendChild(ul_completed);
 
   const div_postEdge = document.createElement("div");
   div_postEdge.classList.add("postEdge");
@@ -333,9 +338,6 @@ function getPost() {
     // div_postEdge.classList.add("postEdge");
     // listContainer.appendChild(div_postEdge);
 
-    // listContainer = document.getElementById(`TODOS[${i}]`);
-    console.log(listContainer.children[0].style);
-
     container.appendChild(listContainer);
   }
   // get Post 해준거면 local에 저장된 거 다 꺼내서 보여준거고
@@ -376,13 +378,10 @@ function editPost(checkedLC) {
   const checked_todoUL = checkedLC.children[0];
   const checked_completedUL = checkedLC.children[1];
 
-  if(checkedLC.classList.contains('mother')) {
-    // 사실 이 경우가 제일 처음 포스트잇을 가리키는 것임
-    checkedLC.children[1].addEventListener("click", addPost);
-  }
   if (checkedLC.children[1].classList[0] === 'addForm') { // addForm이 이미 추가된 경우
     // input form이 형성되어 있는 경우
     // 다른 곳 (현재 list container 아닌 다른 어느 곳) 클릭했을 때 form 사라지게
+    console.log('어딘데')
   } else {
     checkedLC.classList.add("inEdit"); // edit 중이라는 클래스를 추가
 
@@ -420,9 +419,14 @@ function editPost(checkedLC) {
   console.log(checkedLC.children[1]); // addForm
   console.log(checkedLC.children[1].children[1]); // addBtn 맞음
   console.log(checked_addBtn);
+  console.log(checkedLC.children[3])
   checked_addBtn.addEventListener("click", addTodo);
   checked_todoUL.addEventListener("click", deleteCheck);
   checked_completedUL.addEventListener("click", deleteCheck);
+  if(checkedLC.classList.contains('mother')) {
+    // 사실 이 경우가 제일 처음 포스트잇을 가리키는 것임
+    checkedLC.children[3].addEventListener("click", addPost); // 나중에 이거 누르면 드래그 앤 드롭으로 홀드 되게
+  }
 }
 
 function InEditToDone() {
