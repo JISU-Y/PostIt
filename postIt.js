@@ -8,8 +8,6 @@ const inputText = document.querySelector(".inputText");
 const container = document.querySelector(".container");
 const postEdge = document.querySelector(".postEdge"); // 이버튼안에 추가기능, 편집 기능 등등
 
-var hueb = new Huebee(element, options);
-
 let TODOS = [];
 let localIndex = localStorage.length; // 0으로 초기화 할 게 아니라 지금 local에 저장되어 있는 배열에 따라 달라지자나
 
@@ -470,12 +468,60 @@ function completeTodos(todo, index) {
 
 function changeContainerColor(e) {
   e.preventDefault();
+
   if (e.target.classList[0] === "list-container") {
     // 선택한 것이 list-container일 때
     const checked_LC = e.target;
+    // color input clear
+    if (checked_LC.children.length >= 5) {
+      //input이 추가되었던 것이면
+      checked_LC.children[4].remove();
+    }
 
     // console.log("??");
     // checked_LC.style.backgroundColor = "#f58634";
     // checked_LC.children[3].style.borderLeft = "24px solid #da7731";
+
+    // <!-- use inputs so users can set colors with text -->
+    // <input class="color-input" value="#F80" />
+    // <!-- anchors can be buttons -->
+    // <button class="color-button">Select color</button>
+    // <!-- anchors can be any element -->
+    // <span class="current-color">Current color</span>
+    const color_input = document.createElement("input");
+    color_input.classList.add("color-input");
+    // console.log(checked_LC.style.backgroundColor);
+    // color_input.value = `${checked_LC.style.backgroundColor}`;
+    const color_button = document.createElement("button");
+    color_button.classList.add("color-button");
+    color_button.style.height = "20px";
+
+    checked_LC.appendChild(color_input);
+    checked_LC.appendChild(color_button);
+
+    color_button.addEventListener("click", () => {
+      console.log(color_input.value);
+      checked_LC.style.backgroundColor = color_input.value;
+      color_input.remove();
+      color_button.remove();
+    });
+
+    var hueb = new Huebee(".color-input", {
+      // options
+      notation: "hex",
+      saturations: 1,
+      customColors: ["#C25", "#E62", "#EA0", "#19F", "#333"],
+    });
+
+    hueb.open();
   }
 }
+
+// 0: "구글 킵 처럼 클릭해서 하위 항목으로 만들기"
+// 1: "css 꾸미기"
+// 2: "add post하고 바로 밑에다가 붙이지 말고, hold 하고 있다가 원하는 곳에 붙이기"
+// 3: "포스트잇 색 바꾸기 추가"
+// 4: "포스트잇 전체 삭제 만들기"
+// 5: "inEdit 클래스 css 효과 추가"
+// 6: "색 바꾸기 되었긴 한데 그 list container의 색을 어떻게 저장할 것임?"
+// 7: "mother postIt에서 색 바꾸고 addPost하면 어떻게 그 색을 전달할 것?"
