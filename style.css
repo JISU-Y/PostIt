@@ -56,9 +56,8 @@ h1 {
   background-color: #fbc531;
   width: 250px;
   height: 250px;
-  /* padding: 15px 20px; */
+  padding: 10px 15px;
   margin: 10px;
-  padding: 5px 0;
   list-style-type: disc;
   border-radius: 1px 1px 1px 1px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
@@ -80,7 +79,8 @@ h1 {
 .list-container .completedList {
   width: 100%;
   margin: 5px 0;
-  padding: 3px 15px;
+  padding: 0;
+  /* padding: 3px 15px; */
   pointer-events: none;
 }
 
@@ -88,7 +88,7 @@ h1 {
 .list-container.mother .completedList {
   width: 100%;
   margin: 5px 0;
-  padding: 3px 15px;
+  /* padding: 3px 15px; */
   pointer-events: auto;
 }
 
@@ -128,10 +128,9 @@ h1 {
   position: absolute;
   right: 0;
   bottom: 0;
-  background-color: #fbc531;
   box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.3);
   margin: 0;
-  transition: all 0.5s ease-in;
+  /* transition: all 0.5s ease-in; */
   border-left: 24px solid #e6b224;
   border-bottom: 24px solid transparent;
   display: inline-block;
@@ -140,16 +139,6 @@ h1 {
 
 .list-container .postEdge:hover {
   cursor: pointer;
-  /* width: 24px;
-  height: 24px;
-  position: absolute;
-  bottom: 0;
-  right: 0;
-  background-color: #fbc531;
-  box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.3);
-  margin: 0;
-  border-left: 24px solid #e6b224;
-  border-bottom: 24px solid transparent; */
 }
 
 .todo {

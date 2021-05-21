@@ -6,17 +6,14 @@ const toDoUL = document.querySelector(".toDoList");
 const addButton = document.querySelector(".addBtn"); //todobutton인셈
 const inputText = document.querySelector(".inputText");
 const container = document.querySelector(".container");
-const listContainer = document.querySelector(".list-container");
 const postEdge = document.querySelector(".postEdge"); // 이버튼안에 추가기능, 편집 기능 등등
+
+var hueb = new Huebee(element, options);
 
 let TODOS = [];
 let localIndex = localStorage.length; // 0으로 초기화 할 게 아니라 지금 local에 저장되어 있는 배열에 따라 달라지자나
 
-//addButton.addEventListener("click", addTodo); // 첨부터 대뜸 되게 하지 말고, input 눌렀을 때만 되도록
-// toDoUL.addEventListener("click", deleteCheck);
-// document.addEventListener("DOMContentLoaded", getTodos);
 document.addEventListener("DOMContentLoaded", getPost);
-// postEdge.addEventListener("click", addPost);
 container.addEventListener("click", (e) => {
   if (e.target.classList[0] === "list-container") {
     // 그냥 list container를 클릭했을 때만 check list 하도록
@@ -111,22 +108,22 @@ function deleteCheck(e) {
     const checked_LC = todo.parentElement.parentElement;
     const checked_idx = parseInt(checked_LC.id[6]);
 
-    completeTodos(todo, checked_idx)
+    completeTodos(todo, checked_idx);
 
     todo.classList.toggle("completed");
 
     // 갱신
-    addPost()
+    addPost();
   }
 }
 
 function saveLocalTodos(todo, index) {
-  let todos = [[],[]]; // 0은 todo list / 1은 그 중에 completed 된 애
+  let todos = [[], []]; // 0은 todo list / 1은 그 중에 completed 된 애
 
   if (localStorage.getItem(`TODOS[${index}]`) === null) {
     // local storage 배열이 비어있으면
     // 새로운 배열에다가 빈 배열 할당
-    todos = [[],[]];
+    todos = [[], []];
   } else {
     // 원래 있으면
     // todos에다가 localstorage 배열 넣고
@@ -141,12 +138,12 @@ function saveLocalTodos(todo, index) {
 }
 
 function removeLocalTodos(todo, index) {
-  let todos = [[],[]];
+  let todos = [[], []];
 
   if (localStorage.getItem(`TODOS[${index}]`) === null) {
     // local storage 배열이 비어있으면
     // 새로운 배열에다가 빈 배열 할당
-    todos = [[],[]];
+    todos = [[], []];
   } else {
     // 원래 있으면
     // todos에다가 localstorage 배열 넣고
@@ -156,8 +153,8 @@ function removeLocalTodos(todo, index) {
   // 그래서 children의 0번쨰 요소 li를 찾고 싶음
   const todoIdxText = todo.children[1].innerText;
 
-  console.log(todo.parentElement.classList[0])
-  if(todo.parentElement.classList[0] === 'toDoList') {
+  console.log(todo.parentElement.classList[0]);
+  if (todo.parentElement.classList[0] === "toDoList") {
     todos[0].splice(todos[0].indexOf(todoIdxText), 1);
   } else {
     todos[1].splice(todos[1].indexOf(todoIdxText), 1);
@@ -299,7 +296,6 @@ function getPost() {
 
     listContainer.appendChild(ul_todo);
 
-
     // completed 된거
     const ul_todo_completed = document.createElement("ul");
     ul_todo_completed.classList.add("completedList");
@@ -362,7 +358,10 @@ function checkList(e) {
   console.log(checkedLC.children);
   checkedLC.children[0].style.pointerEvents = "auto";
   checkedLC.children[1].style.pointerEvents = "auto";
-  
+
+  // 마우스 오른쪽 클릭 했을 때 색 바꾸기 이건 진짜 list container만 눌러야함
+  checkedLC.addEventListener("contextmenu", changeContainerColor);
+
   // 선택한 post로 들어가서 inputText다시 달고 추가할 수 있도록 하기
   editPost(checkedLC); // getPost 한 것들만 / 디폴트로 표현되는 제일 첫번째 post it에는 적용 안해도 되잖아? 아닌가
   // 나중에 수정다하면 다시 pointerEvents none으로 바꿔주기 어디선가...
@@ -378,18 +377,15 @@ function editPost(checkedLC) {
   const checked_todoUL = checkedLC.children[0];
   const checked_completedUL = checkedLC.children[1];
 
-  if (checkedLC.children[1].classList[0] === 'addForm') { // addForm이 이미 추가된 경우
-    // input form이 형성되어 있는 경우
-    // 다른 곳 (현재 list container 아닌 다른 어느 곳) 클릭했을 때 form 사라지게
-    console.log('어딘데')
-  } else {
+  // addForm이 없을 경우에만
+  if (checkedLC.children[1].classList[0] !== "addForm") {
     checkedLC.classList.add("inEdit"); // edit 중이라는 클래스를 추가
 
     // children 개수가 1일때는 아직 input form 안만든것
     // input form이 형성이 되지 않은 경우에만
     const form_todo = document.createElement("form");
     form_todo.classList.add("addForm");
-    checked_todoUL.after(form_todo) // ul 밑에 갖다가 붙인다.
+    checked_todoUL.after(form_todo); // ul 밑에 갖다가 붙인다.
     // checkedLC.appendChild(form_todo); // list 하위에 todoList 다음에 붙이기
 
     const input_todo = document.createElement("input");
@@ -419,11 +415,11 @@ function editPost(checkedLC) {
   console.log(checkedLC.children[1]); // addForm
   console.log(checkedLC.children[1].children[1]); // addBtn 맞음
   console.log(checked_addBtn);
-  console.log(checkedLC.children[3])
+  console.log(checkedLC.children[3]);
   checked_addBtn.addEventListener("click", addTodo);
   checked_todoUL.addEventListener("click", deleteCheck);
   checked_completedUL.addEventListener("click", deleteCheck);
-  if(checkedLC.classList.contains('mother')) {
+  if (checkedLC.classList.contains("mother")) {
     // 사실 이 경우가 제일 처음 포스트잇을 가리키는 것임
     checkedLC.children[3].addEventListener("click", addPost); // 나중에 이거 누르면 드래그 앤 드롭으로 홀드 되게
   }
@@ -443,10 +439,10 @@ function InEditToDone() {
 }
 
 function completeTodos(todo, index) {
-  let todos = [[],[]];
+  let todos = [[], []];
 
   if (localStorage.getItem(`TODOS[${index}]`) === null) {
-    todos = [[],[]];
+    todos = [[], []];
   } else {
     todos = JSON.parse(localStorage.getItem(`TODOS[${index}]`));
   }
@@ -455,27 +451,31 @@ function completeTodos(todo, index) {
   // 배열 하나만 갖고 온거임
   const todoIdxText = todo.children[1].innerText;
 
-  console.log(todo.parentElement.classList[0])
+  console.log(todo.parentElement.classList[0]);
 
-  if(todo.parentElement.classList[0] === 'completedList') {
+  if (todo.parentElement.classList[0] === "completedList") {
     // completed 였다가 방금 눌러서 다시 uncomplete하려고 했을 때
     todos[1].splice(todos[1].indexOf(todoIdxText), 1);
 
-    todos[0].push(todoIdxText)
+    todos[0].push(todoIdxText);
   } else {
     // completed 아니었다가 방금 눌러서 complete하려고 했을 때
     todos[0].splice(todos[0].indexOf(todoIdxText), 1);
 
-    todos[1].push(todoIdxText)
-  } 
+    todos[1].push(todoIdxText);
+  }
 
   localStorage.setItem(`TODOS[${index}]`, JSON.stringify(todos));
 }
 
-// 0: "1. 구글 킵 처럼 클릭해서 하위 항목으로 만들기"
-// 1: "2. css 꾸미기"
-// 2: "3. 포스트잇 전체 삭제 만들기"
-// 3: "5. add post하고 바로 밑에다가 붙이지 말고, hold 하고 있다가 원하는 곳에 붙이기"
-// 4: "포스트잇 색 바꾸기 추가"
-// 5: "complete 저장"
-// 6: "inEdit 클래스 css 효과 추가"
+function changeContainerColor(e) {
+  e.preventDefault();
+  if (e.target.classList[0] === "list-container") {
+    // 선택한 것이 list-container일 때
+    const checked_LC = e.target;
+
+    // console.log("??");
+    // checked_LC.style.backgroundColor = "#f58634";
+    // checked_LC.children[3].style.borderLeft = "24px solid #da7731";
+  }
+}
