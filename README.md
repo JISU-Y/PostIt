@@ -4,7 +4,7 @@
 포스트잇을 이용해서 즉각적으로 생각나는 것들을 추가하고,
 이를 모든 사람과 공유할 수 있는 웹 어플리케이션
 
-[link] https://post-your-plans.netlify.app/
+[link] https://jisu-y.github.io/PostIt/
 
 ---
 
@@ -17,8 +17,8 @@
 ---
 <!-- Line -->
 
-### 🟣 Main UI
-![post it main UI](https://user-images.githubusercontent.com/80020227/146124551-76118fbf-c20d-4e0b-89de-36e5bc094bac.JPG)
+### 🟡 Main UI
+![mainUI](https://user-images.githubusercontent.com/80020227/146292772-a614255d-bbc6-44b7-85e8-40e6b2803da7.JPG)
 
 ---
 
@@ -49,7 +49,7 @@
 ### 🛠 기술 스택
 
 - Frontend : HTML, CSS, Vanilla JS
-- 배포: 
+- 배포: github pages
 
 ---
 
